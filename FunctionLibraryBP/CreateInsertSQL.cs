@@ -75,13 +75,15 @@ namespace FunctionLibraryBP
 
             // 表形式であるか確認(カンマ・タブ文字、改行コード)
             if (String.IsNullOrEmpty(inputData.Trim())) return;
+
             string separateLine = inputData.Split(new string[] { "\r\n" }, StringSplitOptions.None).Length > 1 ? "\r\n" : "\r";
             string separateCell = inputData.Split(new string[] { "\t" }, StringSplitOptions.None).Length > 1 ? "\t" : ",";
 
-            if (inputData.Split(new string[] { separateLine }, StringSplitOptions.None).Length <= 1) return;
-            if (inputData.Split(new string[] { separateCell }, StringSplitOptions.None).Length <= 1) return;
+            if (!inputData.Contains(separateCell) || !inputData.Contains(separateLine)) return;
+
             List<List<String>> tableData = inputData.Split(new string[] { separateLine }, StringSplitOptions.None)
-                                          .Select(l => l.Split(new string[] { separateCell }, StringSplitOptions.None).ToList()).ToList();
+                                           .Where(l => l.Contains(separateCell))    
+                                           .Select(l => l.Split(new string[] { separateCell }, StringSplitOptions.None).ToList()).ToList();
             // title & record無し
             if (tableData[0].Any(c => String.IsNullOrEmpty(c))) return;
             if (tableData.Count() <= 1) return;
@@ -117,8 +119,6 @@ namespace FunctionLibraryBP
             // record
             for (int y = 1; y < tableData.Count(); y++)
             {
-                if (tableData[y].Count() <= 1) return;
-
                 string recordData = string.Empty;
                 for (int x = 0; x < tableData[y].Count(); x++)
                 {
