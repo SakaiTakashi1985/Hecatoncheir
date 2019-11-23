@@ -27,7 +27,7 @@ namespace FunctionLibraryBP
         public long LastFileSize { get; set; }
         #endregion
 
-        public ClipSharing(string panelName) 
+        public ClipSharing(string panelName)
             : base(nameof(ClipSharing), panelName)
         {
             Directory.CreateDirectory(TemporaryPath);
@@ -38,57 +38,30 @@ namespace FunctionLibraryBP
             AccessRetryCount = 10;
         }
 
-        public void LoadClipBoard(object sender, EventArgs e)
+        private bool ExistsLoadFile(string[] inputFileList)
         {
-            string[] inputFileList;
-            // Saveファイルの有無チェック
-            try
-            {
-                inputFileList = Directory.EnumerateFileSystemEntries(TemporaryPath).ToArray();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                // リトライ
-                AccessRetryCount--;
-                if (AccessRetryCount <= 0)
-                {
-                    if (sender is Timer) ((Timer)sender).Enabled = false;
-
-                    var dialogResult = MessageBox.Show($"configファイルに定義された共有フォルダにアクセス出来ません。続行しますか？\r\n" +
-                                                       $"ApplicationBasePath:{Directory.GetParent(TemporaryPath)}",
-                                                       "共有フォルダにアクセス出来ません", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (dialogResult == DialogResult.No)
-                    {
-                        Application.Exit();
-                        return;
-                    }
-                    AccessRetryCount = 5;
-                    if (sender is Timer) ((Timer)sender).Enabled = true;
-                }
-                return;
-            }
-            AccessRetryCount = 5;
-            if (inputFileList.Length <= 0) return;
+            bool retCd = false;
+            if (inputFileList.Length <= 2) return retCd;
 
             // 99_ENDファイルが無い場合はSave中
-            if (!inputFileList.Any(f => Path.GetFileName(f) == "END")) return;
+            if (!inputFileList.Any(f => Path.GetFileName(f) == "END")) return retCd;
 
             // ファイル最終更新日時
-            //var saveFileCreateTime = inputFileList.Max(f => File.GetLastWriteTime(f));
-            // ファイルサイズ
-            var fileSize = inputFileList.Where(f => !Directory.Exists(f)).Sum(f => new FileInfo(f).Length);
-            // ファイル数
-            var fileCount = inputFileList.Where(f => !Directory.Exists(f)).Count();
+            var saveFileCreateTime = inputFileList.Max(f => File.GetLastWriteTime(f));
+            if (DateTime.Compare(LastLoadTime, saveFileCreateTime) == 0) return retCd;
 
-            //if (DateTime.Compare(LastLoadTime, saveFileCreateTime) >= 0) return;
-            if (fileSize == LastFileSize && fileCount == LastFileCount) return;
+            return true;
+        }
 
+
+        public void LoadClipBoardProcess(string[] inputFileList)
+        {
             DataObject dataObject = new DataObject();
-            // ファイルコピー
+            // fileCopyの場合はコピーして終了
             if (inputFileList.Any(f => Directory.Exists(f)))
             {
                 string outputFilePath = inputFileList.Where(f => Directory.Exists(f)).First();
-                dataObject.SetData(DataFormats.FileDrop,Directory.EnumerateFileSystemEntries(outputFilePath).ToArray());
+                dataObject.SetData(DataFormats.FileDrop, Directory.EnumerateFileSystemEntries(outputFilePath).ToArray());
             }
             else
             {
@@ -103,8 +76,6 @@ namespace FunctionLibraryBP
 
                     string format = Path.GetFileNameWithoutExtension(fileName);
                     string extName = Path.GetExtension(fileName).Substring(1);
-
-                    Debug.WriteLine($"load {fileName}");
 
                     switch (extName)
                     {
@@ -143,10 +114,7 @@ namespace FunctionLibraryBP
             Clipboard.Clear();
             Clipboard.SetDataObject(dataObject);
 
-            ShareCompornent.NotifyControl.ShowBalloonTip(3000, "ClipBord共有", "ClipBord同期完了", ToolTipIcon.Info);
-            LastFileCount = fileCount;
-            LastFileSize = fileSize;
-            //LastLoadTime = DateTime.Now;
+            LastLoadTime = Directory.EnumerateFiles(TemporaryPath).Max(f => File.GetLastWriteTime(f));
 
             // 確認
             /*
@@ -158,6 +126,56 @@ namespace FunctionLibraryBP
             BasePath = backUpPath;
             */
         }
+
+        public void LoadClipBoardAuto(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] inputFileList = Directory.EnumerateFileSystemEntries(TemporaryPath).ToArray();
+                if (ExistsLoadFile(inputFileList))
+                {
+                    LoadClipBoardProcess(inputFileList);
+                    ShareCompornent.NotifyControl.ShowBalloonTip(3000, "ClipBord共有", "ClipBord同期完了", ToolTipIcon.Info);
+                }
+                AccessRetryCount = 10;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // リトライ
+                AccessRetryCount--;
+                if (AccessRetryCount <= 0)
+                {
+                    if (sender is Timer) ((Timer)sender).Enabled = false;
+
+                    var dialogResult = MessageBox.Show($"configファイルに定義された共有フォルダにアクセス出来ません。続行しますか？\r\n" +
+                                                       $"ApplicationBasePath:{Directory.GetParent(TemporaryPath)}",
+                                                       "共有フォルダにアクセス出来ません", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        Application.Exit();
+                        return;
+                    }
+                    AccessRetryCount = 5;
+                    if (sender is Timer) ((Timer)sender).Enabled = true;
+                }
+            }
+        }
+
+        public void LoadClipBoardManual(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] inputFileList = Directory.EnumerateFileSystemEntries(TemporaryPath).ToArray();
+                if (inputFileList.Length <= 0) return;
+                LoadClipBoardProcess(inputFileList);
+                ShareCompornent.NotifyControl.ShowBalloonTip(3000, "ClipBord共有", "ClipBord同期完了", ToolTipIcon.Info);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                ShareCompornent.NotifyControl.ShowBalloonTip(3000, "ClipBord共有", $"ClipBord同期失敗！！\r\n{ex.Message}", ToolTipIcon.Error);
+            }
+        }
+
 
         public void SaveClipBoard(object sender, EventArgs e)
         {
@@ -233,13 +251,9 @@ namespace FunctionLibraryBP
             File.Create(Path.Combine(TemporaryPath, "END")).Close();
 
             ShareCompornent.NotifyControl.ShowBalloonTip(3000, "ClipBord共有", "ClipBordセーブ完了", ToolTipIcon.Info);
-            //LastLoadTime = DateTime.Now;
 
             inputFileList = Directory.EnumerateFileSystemEntries(TemporaryPath).ToArray();
-            // ファイルサイズ
-            LastFileSize = inputFileList.Where(f => !Directory.Exists(f)).Sum(f => new FileInfo(f).Length);
-            // ファイル数
-            LastFileCount = inputFileList.Where(f => !Directory.Exists(f)).Count();
+            LastLoadTime = Directory.EnumerateFiles(TemporaryPath).Max(f => File.GetLastWriteTime(f));
         }
 
         public override void ShowDegugInfo(object sender, EventArgs e)

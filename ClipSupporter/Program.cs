@@ -37,7 +37,7 @@ namespace ClipSupporter
             }
             else if (MyLimitedState == LimitedState.Limited)
             {
-                MessageBox.Show($"使用期限日({LicenseLimited.LimitedUseDate.ToShortDateString()})を越えました。使用不可となります。すまぬ・・・すまぬ・・・");
+                MessageBox.Show($"使用期限日({LicenseLimited.LimitedUseDate.ToShortDateString()})を越えましたので使用不可となります。すみません・・・");
                 return;
             }
 

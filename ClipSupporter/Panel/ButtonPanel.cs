@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CommonLibrary.Limited;
 using FunctionLibraryBP;
+using System.Linq;
 
 namespace ClipSupporter.Panel
 {
@@ -31,7 +32,7 @@ namespace ClipSupporter.Panel
 
             // サイズの定数化
             ButtonArea.Width = CommonLibrary.DesignConst.PanelAreaXSize;
-            ButtonArea.Height= CommonLibrary.DesignConst.PanelAreaYSize;
+            ButtonArea.Height = CommonLibrary.DesignConst.PanelAreaYSize;
 
             // 横の分割
             AreaWidth = ButtonArea.Width;
@@ -91,7 +92,7 @@ namespace ClipSupporter.Panel
             MethodInfo minfo2 = eInfo.GetAddMethod();
 
             minfo2.Invoke(control, new Object[] { d });
-            
+
             return control;
         }
 
@@ -146,7 +147,29 @@ namespace ClipSupporter.Panel
             PropertyInfo pInfo = tp.GetProperty(propName);
             if (pInfo != null)
             {
-                pInfo.SetValue(control, Convert.ChangeType(setValue, pInfo.PropertyType));
+                if (pInfo.PropertyType.IsEnum)
+                {
+
+                    pInfo.SetValue(control, Enum.Parse(pInfo.PropertyType, (string)setValue));
+                }
+                else if (pInfo.PropertyType == typeof(string)
+                      || pInfo.PropertyType == typeof(bool)
+                      || pInfo.PropertyType == typeof(int)
+                      || pInfo.PropertyType == typeof(double)
+                      || pInfo.PropertyType == typeof(short)
+                      || pInfo.PropertyType == typeof(decimal)
+                      )
+                {
+                    pInfo.SetValue(control, Convert.ChangeType(setValue, pInfo.PropertyType));
+                }
+                else
+                {
+#warning 今のところcolor限定
+                    pInfo.SetValue(control, new ColorConverter().ConvertFromString((string)setValue));
+
+                }
+
+
             }
         }
 

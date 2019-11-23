@@ -47,7 +47,7 @@ namespace ClipSupporter
             LoadProperty();
 
             // config読み出し
-            this.Text = ConfigurationManager.AppSettings["ApplicationBaseTitle"];
+            this.Text = ConfigurationManager.AppSettings["ApplicationTitle"];
 
             // Panel共有オブジェクトの生成
             ShareCompornent.NotifyControl = notifyIcon1;
@@ -157,7 +157,7 @@ namespace ClipSupporter
             // Formの高さを縮める
             //for (int tp = tabControl1.TabPages.Count - 1; tp >= 0; tp--)
             //{
-                tabControl1.Height = topPos + 30;
+            tabControl1.Height = topPos + 30;
             //}
             this.Height = topPos + 105;
 
