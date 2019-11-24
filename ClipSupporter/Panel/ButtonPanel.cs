@@ -30,39 +30,49 @@ namespace ClipSupporter.Panel
         {
             InitializeComponent();
 
-            // サイズの定数化
-            ButtonArea.Width = CommonLibrary.DesignConst.PanelAreaXSize;
-            ButtonArea.Height = CommonLibrary.DesignConst.PanelAreaYSize;
-
-            // 横の分割
-            AreaWidth = ButtonArea.Width;
-            CellWidth = AreaWidth / cfg.DividedXSize;
-
-            // 縦の拡張
-            CellHeight = ButtonArea.Height;
-            AreaHeight = ButtonArea.Height * cfg.ExpansionYSize;
-
-            // 拡張した分パネルを高くする
-            if (cfg.ExpansionYSize > 1) Height += (CellHeight * (cfg.ExpansionYSize - 1));
-
-            Assembly assembly = Assembly.LoadFrom($"{cfg.AssemblyName}.dll");
-            Type myType = assembly.GetType(cfg.ClassName);
-            ConstructorInfo constructor = myType.GetConstructor(new Type[] { typeof(string) });
-            MainInstance = constructor.Invoke(new object[] { cfg.FolderName });
-
-            this.Controls.Remove(ButtonArea);
-
-            foreach (Config.ControlConfigElement cfgCtrl in cfg.Controls)
+            try
             {
-                object a = CreateContorl(cfgCtrl);
-                if (a is Control)
+                // サイズの定数化
+                ButtonArea.Width = CommonLibrary.DesignConst.PanelAreaXSize;
+                ButtonArea.Height = CommonLibrary.DesignConst.PanelAreaYSize;
+
+                // 横の分割
+                AreaWidth = ButtonArea.Width;
+                CellWidth = AreaWidth / cfg.DividedXSize;
+
+                // 縦の拡張
+                CellHeight = ButtonArea.Height;
+                AreaHeight = ButtonArea.Height * cfg.ExpansionYSize;
+
+                // 拡張した分パネルを高くする
+                if (cfg.ExpansionYSize > 1) Height += (CellHeight * (cfg.ExpansionYSize - 1));
+
+                // アセンブラとインスタンス生成
+                Assembly assembly = Assembly.LoadFrom($"{cfg.AssemblyName}.dll");
+                Type myType = assembly.GetType(cfg.ClassName);
+                ConstructorInfo constructor = myType.GetConstructor(new Type[] { typeof(string) });
+                MainInstance = constructor.Invoke(new object[] { cfg.FolderName });
+
+                // コントロール生成
+                foreach (Config.ControlConfigElement cfgCtrl in cfg.Controls)
                 {
-                    this.Controls.Add((Control)a);
+                    object ctrl = CreateContorl(cfgCtrl);
+                    if (ctrl is Control)
+                    {
+                        this.Controls.Add((Control)ctrl);
+                    }
+                    else if (ctrl is Timer)
+                    {
+                        MainTimer = (Timer)ctrl;
+                    }
                 }
-                if (a is Timer)
-                {
-                    MainTimer = (Timer)a;
-                }
+                // サイズ・位置を決めるエリアのコントロールを削除する
+                this.Controls.Remove(ButtonArea);
+            }
+            catch (Exception ex)
+            {
+
+
             }
         }
 
@@ -125,20 +135,6 @@ namespace ClipSupporter.Panel
                         break;
                 }
             }
-
-            // left, top, width, heightの設定
-            //if (hashtable.Count == 2)
-            //{
-            //    //int[] xPos = ((string)hashtable[X_POSITION]).Split(new string[]{"-"}, StringSplitOptions.None);
-            //    //// Left
-            //    //SetProperty(control, "Left", AreaLeft + (AreaCellWidth * (int)hashtable[X_SIZE_START]));
-            //    //// Top
-            //    //SetProperty(control, "Top", AreaTop + (AreaCellHeight * (int)hashtable[Y_SIZE_START]));
-            //    //// Width
-            //    //SetProperty(control, "Width", AreaCellWidth * ((int)hashtable[X_SIZE_END] - (int)hashtable[X_SIZE_START]));
-            //    //// Height
-            //    //SetProperty(control, "Heght", AreaCellHeight * ((int)hashtable[Y_SIZE_END] - (int)hashtable[Y_SIZE_START]));
-            //}
         }
 
         private void SetProperty(object control, string propName, object setValue)

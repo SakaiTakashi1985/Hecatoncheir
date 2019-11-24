@@ -139,7 +139,8 @@ namespace FunctionLibraryBP
                 }
                 AccessRetryCount = 10;
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex)
+            when (ex is FileNotFoundException || ex is UnauthorizedAccessException)
             {
                 // リトライ
                 AccessRetryCount--;

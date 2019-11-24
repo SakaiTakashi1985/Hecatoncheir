@@ -35,19 +35,14 @@ namespace ClipSupporter
         public ClipSupporterForm()
         {
             InitializeComponent();
-            //MyLimitedState = LicenseLimited.CanUsed();
-            //if (MyLimitedState == LimitedState.Limited)
-            //{
-            //    MessageBox.Show($"使用期限日({LicenseLimited.LimitedUseDate.ToShortDateString()})を越えました。使用不可となります。すまぬ・・・すまぬ・・・");
-            //    Application.Exit();
-            //    return;
-            //}
 
             // 設定の取り込み
             LoadProperty();
 
             // config読み出し
-            this.Text = ConfigurationManager.AppSettings["ApplicationTitle"];
+            string title = ConfigurationManager.AppSettings["ApplicationTitle"];
+            this.Text = title;
+            notifyIcon1.Text = title;
 
             // Panel共有オブジェクトの生成
             ShareCompornent.NotifyControl = notifyIcon1;
@@ -162,14 +157,6 @@ namespace ClipSupporter
             this.Height = topPos + 105;
 
             tabControl1.SelectedIndex = 0;
-        }
-
-        private void ClipSupporterForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-        }
-
-        private void ClipSupporterForm_FormClosed(object sender, EventArgs e)
-        {
         }
 
         private void ClipSupporterForm_FormClosing(object sender, FormClosingEventArgs e)
