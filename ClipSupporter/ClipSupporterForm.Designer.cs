@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClipSupporterForm));
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageKC = new System.Windows.Forms.TabPage();
             this.PanelArea = new System.Windows.Forms.Panel();
@@ -45,20 +45,25 @@
             this.RedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.notifyMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.StripMenuVersionInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuPositionReset = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPageKC.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.notifyMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // notifyIcon1
+            // notifyIcon
             // 
-            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIcon1.BalloonTipText = "a";
-            this.notifyIcon1.BalloonTipTitle = "b";
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipText = "a";
+            this.notifyIcon.BalloonTipTitle = "b";
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "notifyIcon1";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.Click += new System.EventHandler(this.notifyIcon1_Click);
             // 
             // tabControl1
             // 
@@ -178,6 +183,39 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // notifyMenu
+            // 
+            this.notifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StripMenuPositionReset,
+            this.StripMenuVersionInfo,
+            this.StripMenuEnd});
+            this.notifyMenu.Name = "notifyMenu";
+            this.notifyMenu.Size = new System.Drawing.Size(181, 92);
+            // 
+            // StripMenuVersionInfo
+            // 
+            this.StripMenuVersionInfo.AccessibleName = "VersionInfo";
+            this.StripMenuVersionInfo.Name = "StripMenuVersionInfo";
+            this.StripMenuVersionInfo.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuVersionInfo.Text = "バージョン情報";
+            this.StripMenuVersionInfo.Click += new System.EventHandler(this.StripMenuVersionInfo_Click);
+            // 
+            // StripMenuEnd
+            // 
+            this.StripMenuEnd.AccessibleName = "ApplicationExit";
+            this.StripMenuEnd.Name = "StripMenuEnd";
+            this.StripMenuEnd.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuEnd.Text = "終了";
+            this.StripMenuEnd.Click += new System.EventHandler(this.StripMenuEnd_Click);
+            // 
+            // StripMenuPositionReset
+            // 
+            this.StripMenuPositionReset.AccessibleName = "PositionReset";
+            this.StripMenuPositionReset.Name = "StripMenuPositionReset";
+            this.StripMenuPositionReset.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuPositionReset.Text = "左上に表示";
+            this.StripMenuPositionReset.Click += new System.EventHandler(this.StripMenuPositionReset_Click);
+            // 
             // ClipSupporterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -200,6 +238,7 @@
             this.tabPageKC.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.notifyMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,7 +247,7 @@
         #endregion
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageKC;
-        public System.Windows.Forms.NotifyIcon notifyIcon1;
+        public System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Panel PanelArea;
@@ -221,6 +260,10 @@
         private System.Windows.Forms.ToolStripMenuItem RedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem topMostToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip notifyMenu;
+        private System.Windows.Forms.ToolStripMenuItem StripMenuPositionReset;
+        private System.Windows.Forms.ToolStripMenuItem StripMenuVersionInfo;
+        private System.Windows.Forms.ToolStripMenuItem StripMenuEnd;
     }
 }
 

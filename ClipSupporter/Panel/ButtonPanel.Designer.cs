@@ -1,4 +1,6 @@
-﻿namespace ClipSupporter.Panel
+﻿using System.Windows.Controls;
+
+namespace ClipSupporter.Panel
 {
     partial class ButtonPanel
     {
@@ -52,10 +54,11 @@
             // ButtonPanel
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.ButtonArea);
             this.Name = "ButtonPanel";
-            this.Size = new System.Drawing.Size(200, 50);
+            this.Size = new System.Drawing.Size(198, 48);
             this.Load += new System.EventHandler(this.ButtonPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

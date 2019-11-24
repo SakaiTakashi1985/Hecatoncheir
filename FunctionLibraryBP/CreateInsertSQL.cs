@@ -45,7 +45,7 @@ namespace FunctionLibraryBP
 
         public string TableNameDefPath { get; set; }
 
-        public CreateInsertSQL(string panelName) 
+        public CreateInsertSQL(string panelName)
             : base(nameof(CreateInsertSQL), panelName)
         {
             TableNameDefPath = Path.Combine(ConfigPath, DICTIONARY_FILE);
@@ -82,7 +82,7 @@ namespace FunctionLibraryBP
             if (!inputData.Contains(separateCell) || !inputData.Contains(separateLine)) return;
 
             List<List<String>> tableData = inputData.Split(new string[] { separateLine }, StringSplitOptions.None)
-                                           .Where(l => l.Contains(separateCell))    
+                                           .Where(l => l.Contains(separateCell))
                                            .Select(l => l.Split(new string[] { separateCell }, StringSplitOptions.None).ToList()).ToList();
             // title & record無し
             if (tableData[0].Any(c => String.IsNullOrEmpty(c))) return;
@@ -95,13 +95,13 @@ namespace FunctionLibraryBP
             // selected TableName
             string inputTableName = SelectAndInputForm.ShowDialog("テーブル名入力"
                 , "テーブル名を選択、もしくは入力してください。"
-                , !String.IsNullOrEmpty(tableList) 
+                , !String.IsNullOrEmpty(tableList)
                   ? tableList.Split(new char[] { ',' })
                   : new string[] { DEFAULT_TABLE_NAME }
                 );
 
             // tableName Set
-            if (!tableList.Contains(inputTableName) || inputTableName == DEFAULT_TABLE_NAME )
+            if (!tableList.Contains(inputTableName) && inputTableName != DEFAULT_TABLE_NAME)
             {
                 tableList = String.IsNullOrEmpty(tableList) ? inputTableName : $"{tableList},{inputTableName}";
                 DicTableNamDef[colsKey] = tableList;

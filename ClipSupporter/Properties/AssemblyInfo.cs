@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 制御されます。アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更します。
 [assembly: AssemblyTitle("ClipSupporter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("このツールは私、小沼が個人的な時間で開発業務の改善を目的に作成したツールです。その為、バグの修正・機能追加の要望は受け付けますがその対応、およびソース提供は小沼の裁量次第であることをご了承下さい。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ClipSupporter")]

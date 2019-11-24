@@ -46,7 +46,6 @@
             this.Controls.Add(this.button1);
             this.Name = "SamplePanel";
             this.Size = new System.Drawing.Size(200, 50);
-            //this.Controls.SetChildIndex(this.TitleLabel, 0);
             this.Controls.SetChildIndex(this.button1, 0);
             this.ResumeLayout(false);
             this.PerformLayout();

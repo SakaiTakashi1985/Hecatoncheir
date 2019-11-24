@@ -59,12 +59,6 @@
     <Compile Include="Config\PanelSection.cs" />
     <Compile Include="Config\PropertyConfigElement.cs" />
     <Compile Include="Config\PropertyConfigElementCollection.cs" />
-    <Compile Include="Panel\BladePanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Panel\BladePanel.Designer.cs">
-      <DependentUpon>BladePanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="ClipSupporterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,9 +84,12 @@
     <Compile Include="Panel\PanelConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Panel\BladePanel.resx">
-      <DependentUpon>BladePanel.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="VerInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VerInfoDialog.Designer.cs">
+      <DependentUpon>VerInfoDialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ClipSupporterForm.resx">
       <DependentUpon>ClipSupporterForm.cs</DependentUpon>
       <SubType>Designer</SubType>

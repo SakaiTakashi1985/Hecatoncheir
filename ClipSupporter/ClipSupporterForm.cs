@@ -42,10 +42,11 @@ namespace ClipSupporter
             // config読み出し
             string title = ConfigurationManager.AppSettings["ApplicationTitle"];
             this.Text = title;
-            notifyIcon1.Text = title;
+            notifyIcon.Text = title;
+            notifyIcon.ContextMenuStrip = notifyMenu;
 
             // Panel共有オブジェクトの生成
-            ShareCompornent.NotifyControl = notifyIcon1;
+            ShareCompornent.NotifyControl = notifyIcon;
             ShareCompornent.ConfigBasePath = Path.Combine(Application.StartupPath, "Conf");
             ShareCompornent.TemplateBasePath = ConfigurationManager.AppSettings["ApplicationBasePath"];
             ShareCompornent.LimitedSts = MyLimitedState;
@@ -121,6 +122,9 @@ namespace ClipSupporter
 
         private void ClipSupporterForm_Load(object sender, EventArgs e)
         {
+#warning タブコントロール生成処理追加　必要
+
+#warning 現状SamplePanel不要
             // SamplePanelの削除
             for (int tp = tabControl1.TabPages.Count - 1; tp >= 0; tp--)
             {
@@ -150,10 +154,7 @@ namespace ClipSupporter
             }
 
             // Formの高さを縮める
-            //for (int tp = tabControl1.TabPages.Count - 1; tp >= 0; tp--)
-            //{
             tabControl1.Height = topPos + 30;
-            //}
             this.Height = topPos + 105;
 
             tabControl1.SelectedIndex = 0;
@@ -161,14 +162,34 @@ namespace ClipSupporter
 
         private void ClipSupporterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            notifyIcon1.Dispose();
+            notifyIcon.Dispose();
             SaveProperty();
         }
 
         private void notifyIcon1_Click(object sender, EventArgs e)
         {
-            this.Show();
+            //this.Location = new Point(0, 0);
+            //this.Show();
             this.Activate();
+        }
+
+        private void StripMenuPositionReset_Click(object sender, EventArgs e)
+        {
+            this.Location = new Point(0, 0);
+            this.Activate();
+        }
+
+        private void StripMenuVersionInfo_Click(object sender, EventArgs e)
+        {
+            using (VerInfoDialog dialog = new VerInfoDialog())
+            {
+                dialog.ShowDialog();
+            }
+        }
+
+        private void StripMenuEnd_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

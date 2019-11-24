@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace ClipSupporter.Panel.DesignSample
 {
-    public partial class SamplePanel : ClipSupporter.BladePanel
+    public partial class SamplePanel : UserControl
     {
         public SamplePanel() : base()
         {
 
         }
-        public SamplePanel(Config.PanelConfigElement cfg) : base(cfg)
+        public SamplePanel(Config.PanelConfigElement cfg)
         {
             InitializeComponent();
         }

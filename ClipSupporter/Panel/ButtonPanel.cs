@@ -14,8 +14,13 @@ using System.Linq;
 
 namespace ClipSupporter.Panel
 {
-    public partial class ButtonPanel : ClipSupporter.BladePanel
+    public partial class ButtonPanel : UserControl
     {
+        public object MainInstance { get; set; }
+
+        public string PanelBasePath { get; set; }
+
+        public Timer MainTimer = null;
         public int AreaWidth { get; set; }
         public int AreaHeight { get; set; }
 
@@ -23,7 +28,7 @@ namespace ClipSupporter.Panel
         public int CellHeight { get; set; }
 
 
-        public ButtonPanel(Config.PanelConfigElement cfg) : base(cfg)
+        public ButtonPanel(Config.PanelConfigElement cfg)
         {
             InitializeComponent();
 

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClosedXML.Excel;
 using CommonLibrary;
+using CommonLibrary.FileAccess;
+using CommonLibrary.SubForms;
 
 namespace FunctionLibraryBP
 {
@@ -14,9 +16,14 @@ namespace FunctionLibraryBP
     {
         public string SelectedFunction { get; set; }
 
+        public string BackUpNamePath { get; set; }
+        public List<string> BackUpNames { get; set; }
+
         public FileProcessing(string panelName)
             : base(nameof(FileProcessing), panelName)
         {
+            BackUpNamePath = Path.Combine(ConfigPath, "BackUpModeDefName.json");
+            BackUpNames = JsonManager.ReadJson<List<string>>(BackUpNamePath);
         }
         public void SetDragDrop(object sender, PaintEventArgs e)
         {
@@ -52,6 +59,7 @@ namespace FunctionLibraryBP
         {
             SelectedFunction = ((ComboBox)sender).Text;
         }
+        static readonly string DEFAULT_BACKUP_NAME = "指定なし";
 
         private void Drop(object sender, DragEventArgs e)
         {
@@ -60,8 +68,25 @@ namespace FunctionLibraryBP
             switch (SelectedFunction)
             {
                 case "BackUp":
-                    string backupDir = Path.Combine(Directory.GetParent(fileName[0]).FullName
-                                                  , $"bkup_{DateTime.Now:yyyyMMddhhmmss}");
+                    // tableName Get
+                    string colsKey = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+                    // selected TableName
+                    string inputName = SelectAndInputForm.ShowDialog("用件入力"
+                        , "バックアップに関する名称が有ったら選択、もしくは入力してください。"
+                        , !(BackUpNames.Count <= 0)
+                          ? BackUpNames.ToArray()
+                          : new string[] { DEFAULT_BACKUP_NAME }
+                        );
+
+                    // tableName Set
+                    if (!BackUpNames.Contains(inputName) && inputName != DEFAULT_BACKUP_NAME)
+                    {
+                        BackUpNames.Add(inputName);
+                        Task.Run(() => JsonManager.WriteJson(BackUpNamePath, BackUpNames));
+                    }
+                    if (inputName == DEFAULT_BACKUP_NAME) inputName = "";
+                    string backupDir = Path.Combine(Directory.GetParent(fileName[0]).FullName, $"bkup{inputName}_{DateTime.Now:yyyyMMddhhmmss}");
                     MakeBackUpFile(fileName, backupDir);
                     break;
                 case "ExcelNeutral":
