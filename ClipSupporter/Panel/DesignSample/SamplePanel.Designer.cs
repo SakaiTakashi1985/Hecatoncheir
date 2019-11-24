@@ -31,11 +31,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // TitleLabel
-            // 
-            this.TitleLabel.Size = new System.Drawing.Size(48, 12);
-            this.TitleLabel.Text = "Sample";
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(3, 15);
@@ -51,7 +46,7 @@
             this.Controls.Add(this.button1);
             this.Name = "SamplePanel";
             this.Size = new System.Drawing.Size(200, 50);
-            this.Controls.SetChildIndex(this.TitleLabel, 0);
+            //this.Controls.SetChildIndex(this.TitleLabel, 0);
             this.Controls.SetChildIndex(this.button1, 0);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -13,10 +13,6 @@ namespace ClipSupporter
 {
     public partial class BladePanel : UserControl
     {
-        //private readonly int AreaLeft = 3;
-        //private readonly int AreaTop = 15;
-
-
         public object MainInstance { get; set; }
 
         public string PanelBasePath { get; set; }
@@ -31,10 +27,10 @@ namespace ClipSupporter
         public BladePanel(Config.PanelConfigElement cfg)
         {
             InitializeComponent();
-            this.TitleLabel.Text = cfg.TitleName;
+            //this.TitleLabel.Text = cfg.TitleName;
             this.PanelBasePath = cfg.FolderName;
 #if DEBUG
-            TitleLabel.Click += new EventHandler(TitleLabel_Click);
+            //TitleLabel.Click += new EventHandler(TiktleLabel_Click);
 #endif
         }
 

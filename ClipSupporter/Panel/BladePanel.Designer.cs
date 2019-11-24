@@ -28,35 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.TitleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // TitleLabel
-            // 
-            this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.TitleLabel.Location = new System.Drawing.Point(0, 2);
-            this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(33, 12);
-            this.TitleLabel.TabIndex = 0;
-            this.TitleLabel.Text = "Title";
             // 
             // BladePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.TitleLabel);
             this.Name = "BladePanel";
             this.Size = new System.Drawing.Size(200, 50);
             this.Load += new System.EventHandler(this.BladePanel_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        public System.Windows.Forms.Label TitleLabel;
     }
 }

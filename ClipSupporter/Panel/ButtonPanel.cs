@@ -16,9 +16,6 @@ namespace ClipSupporter.Panel
 {
     public partial class ButtonPanel : ClipSupporter.BladePanel
     {
-        //private readonly int AreaLeft = 3;
-        //private readonly int AreaTop = 15;
-
         public int AreaWidth { get; set; }
         public int AreaHeight { get; set; }
 
@@ -32,6 +29,9 @@ namespace ClipSupporter.Panel
 
             try
             {
+                this.TitleLabel.Text = cfg.TitleName;
+                this.PanelBasePath = cfg.FolderName;
+
                 // サイズの定数化
                 ButtonArea.Width = CommonLibrary.DesignConst.PanelAreaXSize;
                 ButtonArea.Height = CommonLibrary.DesignConst.PanelAreaYSize;
